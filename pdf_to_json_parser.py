@@ -1,6 +1,7 @@
 import pdfplumber
 import re
 import json
+import os
 
 def clean_text(text):
     lines = text.split('\n')
@@ -80,6 +81,22 @@ def extract_recipe_from_pdf(pdf_path):
 
     return recipe_json
 
-# Przykład użycia:
-json_recipe = extract_recipe_from_pdf('przepisy_pdf\Stromboli _ AniaGotuje.pl.pdf')
-print(json.dumps(json_recipe, ensure_ascii=False, indent=2))
+pdf_dir = 'przepisy_pdf'
+json_dir = 'przepisy_json'
+
+# Tworzy folder wyjściowy jeśli nie istnieje
+os.makedirs(json_dir, exist_ok=True)
+
+for filename in os.listdir(pdf_dir):
+    if filename.lower().endswith('.pdf'):
+        pdf_path = os.path.join(pdf_dir, filename)
+        json_object = extract_recipe_from_pdf(pdf_path)
+        
+        # Przygotowanie ścieżki json: ta sama nazwa pliku, ale .json, w folderze 'przepisy.json'
+        core_name = os.path.splitext(filename)[0]
+        json_path = os.path.join(json_dir, core_name + '.json')
+        
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(json_object, f, ensure_ascii=False, indent=2)
+
+print("KONWERSJA ZAKOŃCZONA")
