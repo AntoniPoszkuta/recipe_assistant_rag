@@ -81,5 +81,5 @@ def extract_recipe_from_pdf(pdf_path):
     return recipe_json
 
 # Przykład użycia:
-json_recipe = extract_recipe_from_pdf('przepisy_pdf\Chleb rwany.pdf')
+json_recipe = extract_recipe_from_pdf('przepisy_pdf\Stromboli _ AniaGotuje.pl.pdf')
 print(json.dumps(json_recipe, ensure_ascii=False, indent=2))
